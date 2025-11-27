@@ -35,8 +35,11 @@ texto2.grid(column=0, row=1)
 texto3 = Label(navegador1, text="Digite a url ou #back para retornar à última página visitada.")
 texto3.grid(column=0, row=2)
 
-busca = Label(navegador1, text="url: ") 
+busca = Entry(navegador1) 
 busca.grid(column=0, row=3)
+
+botao = Button(navegador1, text='Buscar', command=pesquisa)
+botao.grid(column=0, row=5)
 
 resultado = Label(navegador1, text="")
 resultado.grid(column=0, row=4)
