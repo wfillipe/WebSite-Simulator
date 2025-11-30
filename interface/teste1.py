@@ -1,4 +1,3 @@
-
 from tkinter import * #Importando toda a biblioteca de interface grafica 
 from tkinter import messagebox
 
@@ -9,7 +8,7 @@ with open("sites.txt", "r") as i:
 
 def pesquisa():
     url = busca.get().strip()
-    
+
     if url in sites_validos:
         resultado['text'] = 'Site aberto: ' + url
 
