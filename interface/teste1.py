@@ -9,7 +9,7 @@ with open("sites.txt", "r") as i:
 
 def pesquisa():
     url = busca.get().strip()
-
+    
     if url in sites_validos:
         resultado['text'] = 'Site aberto: ' + url
 

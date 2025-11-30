@@ -1,4 +1,4 @@
-ifpb.edu.br
-google.com
-youtube.com
-chess.com
+www.ifpb.edu.br
+www.google.com
+www.youtube.com
+www.chess.com
