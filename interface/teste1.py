@@ -1,10 +1,15 @@
 from tkinter import * #Importando toda a biblioteca de interface grafica 
-from tkinter import messagebox
+from tkinter import messagebox #função da mensagem de erro para o site que não existe
+from pathlib import Path #Biblioteca que pega o caminho dos arquivos que estão na pasta principal do projeto
 
 
 
-with open("sites.txt", "r") as i:
-    sites_validos = [linha.strip() for linha in i]
+BASE_DIR = Path(__file__).resolve().parent
+caminho = BASE_DIR / "dados" / "sites.txt"
+sites_validos = caminho.read_text().splitlines()
+
+
+
 
 def pesquisa():
     url = busca.get().strip()
