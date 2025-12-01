@@ -11,7 +11,7 @@ def iniciar_janela(funcao_pesquisa): #FUNÇÃO DA INTERFACE GRÁFICA
     texto1.grid(column=0, row=0)
 
     texto2 = Label(navegador1, text="Home: [ ]")
-    texto2.grid(column=0, row=1) awdawdawdaw
+    texto2.grid(column=0, row=1) 
 
     texto3 = Label(navegador1, text="Digite a url ou #back para retornar à última página visitada.")
     texto3.grid(column=0, row=2)
