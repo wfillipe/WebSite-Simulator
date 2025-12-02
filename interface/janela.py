@@ -1,7 +1,7 @@
-from tkinter import *
+from tkinter import * 
 
 
-def iniciar_janela(funcao_pesquisa): #FUNÇÃO DA INTERFACE GRÁFICA
+def iniciar_janela(funcao_pesquisa): #Função da interface gráfica e formatação
 
     navegador1 = Tk()
     navegador1.title("Navegador v0.1")
@@ -26,11 +26,11 @@ def iniciar_janela(funcao_pesquisa): #FUNÇÃO DA INTERFACE GRÁFICA
     resultado.grid(column=0, row=5)
 
    
-    def ao_clicar():  #FUNÇÃO DO BOTÃO BUSCAR
+    def ao_clicar():  #Função do botão buscar
         texto = funcao_pesquisa(entrada.get())
         resultado.config(text=texto)
 
     botao = Button(navegador1, text='Buscar', command=ao_clicar)
     botao.grid(column=0, row=6)
 
-    navegador1.mainloop()
+    navegador1.mainloop() #isso é para a janela do tkinter não fechar sozinha
