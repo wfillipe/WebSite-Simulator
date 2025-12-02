@@ -4,24 +4,24 @@ from tkinter import messagebox
 BASE_DIR = Path(__file__).resolve().parent.parent #Aqui o python abre e lê o arquivo sites.txt na pasta dados
 SITES_FILE = BASE_DIR / "dados" / "sites.txt" 
 
-def carregar_sites():
-    #Carrega sites do arquivo
+def carregar_sites(): #Carrega sites do arquivo
+    
     try:
         if SITES_FILE.exists():
             with open(SITES_FILE, 'r', encoding='utf-8') as f:
                 return [linha.strip() for linha in f if linha.strip()]
     except:
-        pass
+        pass 
     return []
 
-def pesquisa(url_digitada):
-    #Função principal: processa as urls
+def pesquisa(url_digitada): #Função principal: processa as urls
+    
     url = url_digitada.strip()
     
     print(f"[SISTEMA] Comando: '{url}'")
     
-    # Comando para adicionar urls
-    if url.startswith("+add "):
+   
+    if url.startswith("+add "): # Comando para adicionar urls
         nova_url = url[5:].strip()
         
         # Formata
@@ -30,15 +30,15 @@ def pesquisa(url_digitada):
         
         print(f"[SISTEMA] Adicionando: {nova_url}")
         
-        # Verifica se já existe
-        sites = carregar_sites()
+        
+        sites = carregar_sites() # Verifica se já existe
         if nova_url in sites:
             messagebox.showinfo("Aviso", f"Site '{nova_url}' já existe!")
             return f"Site '{nova_url}' já existe."
         
-        # Cadastra as urls
+        
         try:
-            with open(SITES_FILE, 'a', encoding='utf-8') as f:
+            with open(SITES_FILE, 'a', encoding='utf-8') as f: # Cadastra as urls
                 f.write(f"\n{nova_url}")
             
             print(f"[SISTEMA] ✓ Adicionado com sucesso!")
