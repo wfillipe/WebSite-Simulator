@@ -4,6 +4,9 @@ from tkinter import messagebox
 BASE_DIR = Path(__file__).resolve().parent.parent #Aqui o python abre e lê o arquivo sites.txt na pasta dados
 SITES_FILE = BASE_DIR / "dados" / "sites.txt" 
 
+
+
+
 def carregar_sites(): #Carrega sites do arquivo .txt
     if not SITES_FILE.exists():
         return 
@@ -11,7 +14,7 @@ def carregar_sites(): #Carrega sites do arquivo .txt
 
 
 def pesquisa(url_digitada): #Função principal: processa as urls
-    
+    historico = []
     url = url_digitada.strip()
     
     if url.startswith("+add "): #Comando para adicionar urls
@@ -23,6 +26,7 @@ def pesquisa(url_digitada): #Função principal: processa as urls
         sites = carregar_sites()
 
         if nova_url in sites:  #Verifica se o site digitado já existe 
+            historico.append(url)
             return f"Site '{nova_url}' já existe"
         
         
@@ -35,7 +39,7 @@ def pesquisa(url_digitada): #Função principal: processa as urls
     
     sites = carregar_sites() #Aqui carrega as mensagens para o usuário de +add sites  
     if url in sites:
-        return f"Site aberto: {url}"
+        return f"Site aberto: {url}\n"
     
     messagebox.showerror("Erro", 
         f"Site '{url}' não encontrado.\n\n"
