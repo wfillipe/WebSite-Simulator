@@ -14,45 +14,30 @@ def pesquisa(url_digitada): #Função principal: processa as urls
     
     url = url_digitada.strip()
     
-    print(f"[SISTEMA] Comando: '{url}'")
-    
-   
-    if url.startswith("+add "): # Comando para adicionar urls
+    if url.startswith("+add "): #Comando para adicionar urls
         nova_url = url[5:].strip()
         
-       
-        if not nova_url.startswith("www."):  # Formatação
+        if not nova_url.startswith("www."):  #Formatação do texto digitado
             nova_url = "www." + nova_url
         
-        print(f"[SISTEMA] Adicionando: {nova_url}")
+        sites = carregar_sites()
+
+        if nova_url in sites:  #Verifica se o site digitado já existe 
+            return f"Site '{nova_url}' já existe"
         
         
-        sites = carregar_sites() # Verifica se já existe
-        if nova_url in sites:
-            messagebox.showinfo("Aviso", f"Site '{nova_url}' já existe!")
-            return f"Site '{nova_url}' já existe."
-        
-        
-        try:
-            with open(SITES_FILE, 'a', encoding='utf-8') as f: # Cadastra as urls
-                f.write(f"\n{nova_url}")
+        with open(SITES_FILE, 'a', encoding='utf-8') as f: #Cadastra as novas urls 
+            f.write(f"\n{nova_url}")
+            return f" Site '{nova_url}' adicionado"
             
-            print(f"[SISTEMA] ✓ Adicionado com sucesso!")
-            messagebox.showinfo("Sucesso", f"Site '{nova_url}' adicionado!")
-            return f"✅ Site '{nova_url}' adicionado!"
-            
-        except Exception as e:
-            print(f"[SISTEMA] ✗ Erro: {e}")
-            messagebox.showerror("Erro", f"Não foi possível adicionar: {e}")
-            return "❌ Erro ao adicionar."
+        
     
     
-    sites = carregar_sites()
-    
+    sites = carregar_sites() #Aqui carrega as mensagens para o usuário de +add sites  
     if url in sites:
         return f"Site aberto: {url}"
-    else:
-        messagebox.showerror("Erro", 
-            f"Site '{url}' não encontrado.\n\n"
-            f"Use '+add {url}' para adicionar à lista.")
-        return ""
+    
+    messagebox.showerror("Erro", 
+        f"Site '{url}' não encontrado.\n\n"
+        f"Use '+add {url}' para adicionar a lista.")
+    return ""
