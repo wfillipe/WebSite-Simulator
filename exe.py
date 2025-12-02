@@ -1,6 +1,4 @@
-from pathlib import Path
-from tkinter import messagebox
-from interface.janela import iniciar_janela
+from interface.janela import iniciar_janela #Importa a função da interface gráfica na pasta interface 
 from nucleo.comandos import pesquisa # Importa o  +add
 
 '''

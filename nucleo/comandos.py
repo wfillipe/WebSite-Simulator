@@ -1,8 +1,8 @@
 from pathlib import Path
 from tkinter import messagebox
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-SITES_FILE = BASE_DIR / "dados" / "sites.txt"
+BASE_DIR = Path(__file__).resolve().parent.parent #Aqui o python abre e lê o arquivo sites.txt na pasta dados
+SITES_FILE = BASE_DIR / "dados" / "sites.txt" 
 
 def carregar_sites():
     #Carrega sites do arquivo
