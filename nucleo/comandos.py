@@ -4,15 +4,11 @@ from tkinter import messagebox
 BASE_DIR = Path(__file__).resolve().parent.parent #Aqui o python abre e lê o arquivo sites.txt na pasta dados
 SITES_FILE = BASE_DIR / "dados" / "sites.txt" 
 
-def carregar_sites(): #Carrega sites do arquivo
-    
-    try:
-        if SITES_FILE.exists():
-            with open(SITES_FILE, 'r', encoding='utf-8') as f:
-                return [linha.strip() for linha in f if linha.strip()]
-    except:
-        pass 
-    return []
+def carregar_sites(): #Carrega sites do arquivo .txt
+    if not SITES_FILE.exists():
+        return 
+    return SITES_FILE.read_text(encoding="utf-8").splitlines()
+
 
 def pesquisa(url_digitada): #Função principal: processa as urls
     
@@ -24,8 +20,8 @@ def pesquisa(url_digitada): #Função principal: processa as urls
     if url.startswith("+add "): # Comando para adicionar urls
         nova_url = url[5:].strip()
         
-        # Formata
-        if not nova_url.startswith("www."):
+       
+        if not nova_url.startswith("www."):  # Formatação
             nova_url = "www." + nova_url
         
         print(f"[SISTEMA] Adicionando: {nova_url}")
