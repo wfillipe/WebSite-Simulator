@@ -2,8 +2,7 @@ from tkinter import *
 from pathlib import Path
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 BASE_DIR = Path(__file__).resolve().parent.parent #No início eu tenho o mesmo código aqui e no comandos.py, serve para ler o arquivo sites.txt da pasta dados
 SITES_FILE = BASE_DIR / "dados" / "sites.txt" 
 
@@ -13,15 +12,10 @@ def carregar_sites():
     return SITES_FILE.read_text(encoding="utf-8").splitlines() 
 
 
+
 def iniciar_janela(funcao_pesquisa): #Maior parte da formatação da janela do tkinter e também a função historico 
     historico = []
     global navegador1
-=======
-def iniciar_janela(funcao_pesquisa):
->>>>>>> 1c7fa3f4a4be9ded3b53405310067810fc624b43
-=======
-def iniciar_janela(funcao_pesquisa):
->>>>>>> 1c7fa3f4a4be9ded3b53405310067810fc624b43
     navegador1 = Tk()
     navegador1.title("Navegador v0.1")
     navegador1.geometry("400x450")
@@ -43,8 +37,7 @@ def iniciar_janela(funcao_pesquisa):
     resultado = Label(navegador1, text="")
     resultado.grid(column=0, row=5)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
     def ao_clicar():
         url = entrada.get().strip()
@@ -60,22 +53,16 @@ def iniciar_janela(funcao_pesquisa):
         if texto.startswith("Site aberto:"):  #Se o site for válido, adiciona ao histórico
             historico.append(url)
             historico_box.insert(END, url)
-=======
+
     def ao_clicar():
         url = entrada.get().strip()
-=======
-    def ao_clicar():
-        url = entrada.get().strip()
->>>>>>> 1c7fa3f4a4be9ded3b53405310067810fc624b43
+
         resposta = funcao_pesquisa(url)
         resultado.config(text=resposta["mensagem"])
 
         if resposta["url"]:
             historico_box.insert(END, resposta["url"])
-<<<<<<< HEAD
->>>>>>> 1c7fa3f4a4be9ded3b53405310067810fc624b43
-=======
->>>>>>> 1c7fa3f4a4be9ded3b53405310067810fc624b43
+
 
     botao = Button(navegador1, text='Buscar', command=ao_clicar)
     botao.grid(column=0, row=6)
