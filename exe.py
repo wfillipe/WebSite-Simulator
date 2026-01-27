@@ -1,5 +1,5 @@
 from interface.janela import * #Importa a função da interface gráfica na pasta interface 
-from nucleo.comandos import pesquisa # Importa o  +add
+from nucleo.comandos import pesquisa# Importa o  +add
 
 
 
