@@ -1,58 +1,119 @@
-from pathlib import Path
 from tkinter import messagebox
+from nucleo.estrutura_sites import EstruturaSites
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-SITES_FILE = BASE_DIR / "dados" / "sites.txt"
+estrutura = EstruturaSites()
+historico = []  # Histórico centralizado aqui
+<<<<<<< HEAD
 
 
-def carregar_sites():
-    if not SITES_FILE.exists():
-        return []
-    return SITES_FILE.read_text(encoding="utf-8").splitlines()
+<<<<<<< HEAD
 
 
 def pesquisa(url_digitada):
+    url = url_digitada.strip()    
+
+    
+    # Comando de ajuda
+=======
+def pesquisa(url_digitada):
+    global historico
     url = url_digitada.strip()
 
-    # Comando de ajuda
+>>>>>>> 1c7fa3f4a4be9ded3b53405310067810fc624b43
+=======
+
+
+def pesquisa(url_digitada):
+    global historico
+    url = url_digitada.strip()
+
+>>>>>>> 1c7fa3f4a4be9ded3b53405310067810fc624b43
     if url == "#help":
-        return (
-            "━━━━━━━━━━  AJUDA  ━━━━━━━━━━\n"
-            "Comandos disponíveis:\n\n"
-            "• #help\n"
-            "• #back: retornar à página anterior\n"
-            "  Mostra esta tela de ajuda.\n\n"
-            "• +add site\n"
-            "  Adiciona um site à lista.\n"
-            "  Exemplo: +add google.com\n\n"
-            "• www.site.com\n"
-            "  Abre um site já cadastrado.\n"
-            "━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        )
+        return {
+            "mensagem": (
+                "━━━━━━━━━━  AJUDA  ━━━━━━━━━━\n"
+                "Comandos disponíveis:\n\n"
+                "• #help\n"
+                "• #back: voltar para a página anterior\n\n"
+                "• +add site\n"
+                "  Exemplo: +add google.com\n\n"
+                "• +addpagina site/pagina\n"
+                "  Exemplo: +addpagina google.com/imagens\n\n"
+                "• www.site.com ou www.site.com/pagina\n"
+                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            ),
+            "url": None
+        }
 
-    # Comando para adicionar URLs
+    if url == "#back":
+        if len(historico) <= 1:
+            return {
+                "mensagem": "Nenhuma página anterior no histórico.",
+                "url": None
+            }
+
+        historico.pop()  # remove a atual
+        pagina_anterior = historico[-1]
+        return {
+            "mensagem": f"Voltando para: {pagina_anterior}",
+            "url": pagina_anterior
+        }
+
     if url.startswith("+add "):
-        nova_url = url[5:].strip()
+        dominio = url[5:].strip()
+        if not dominio.startswith("www."):
+            dominio = "www." + dominio
 
-        if not nova_url.startswith("www."):
-            nova_url = "www." + nova_url
+        if estrutura.existe_url(dominio):
+            return {
+                "mensagem": f"Site '{dominio}' já existe.",
+                "url": None
+            }
 
-        sites = carregar_sites()
+        estrutura.adicionar_site(dominio)
+        return {
+            "mensagem": f"Site '{dominio}' adicionado com sucesso.",
+            "url": None
+        }
 
-        if nova_url in sites:
-            return f"Site '{nova_url}' já existe."
+    if url.startswith("+addpagina "):
+        caminho = url[11:].strip()
 
-        with open(SITES_FILE, 'a', encoding='utf-8') as f:
-            f.write(f"\n{nova_url}")
-            return f"Site '{nova_url}' adicionado com sucesso."
+        if "/" not in caminho:
+            return {
+                "mensagem": "Formato inválido. Use: +addpagina site/pagina",
+                "url": None
+            }
 
-    sites = carregar_sites()
-    if url in sites:
-        return f"Site aberto: {url}\n"
+        dominio, pagina = caminho.split("/", 1)
+        if not dominio.startswith("www."):
+            dominio = "www." + dominio
+
+        estrutura.adicionar_pagina(dominio, pagina)
+        return {
+            "mensagem": f"Página '{pagina}' adicionada ao site '{dominio}'.",
+            "url": None
+        }
+
+    if "/" in url:
+        dominio, pagina = url.split("/", 1)
+    else:
+        dominio, pagina = url, ""
+
+    if estrutura.existe_url(dominio, pagina):
+        pagina_completa = f"{dominio}/{pagina}" if pagina else dominio
+        historico.append(pagina_completa)
+        return {
+            "mensagem": f"Página aberta: {pagina_completa}",
+            "url": pagina_completa
+        }
 
     messagebox.showerror(
         "Erro",
-        f"Site '{url}' não encontrado.\n\n"
-        f"Use '+add {url}' para adicionar à lista."
+        f"URL '{url}' não encontrada.\n\n"
+        f"Use +add ou +addpagina para cadastrar."
     )
-    return ""
+    return {
+        "mensagem": "",
+        "url": None
+    }
