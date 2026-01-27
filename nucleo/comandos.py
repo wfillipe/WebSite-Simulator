@@ -1,15 +1,8 @@
+from nucleo.estrutura_sites import EstruturaSites
 from pathlib import Path
 from tkinter import messagebox
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-SITES_FILE = BASE_DIR / "dados" / "sites.txt"
-
-
-def carregar_sites():
-    if not SITES_FILE.exists():
-        return []
-    return SITES_FILE.read_text(encoding="utf-8").splitlines()
-
+estrutura = EstruturaSites()
 
 def pesquisa(url_digitada):
     url = url_digitada.strip()
@@ -20,39 +13,56 @@ def pesquisa(url_digitada):
             "━━━━━━━━━━  AJUDA  ━━━━━━━━━━\n"
             "Comandos disponíveis:\n\n"
             "• #help\n"
-            "• #back: retornar à página anterior\n"
-            "  Mostra esta tela de ajuda.\n\n"
+            "• #back: retornar à página anterior\n\n"
             "• +add site\n"
-            "  Adiciona um site à lista.\n"
             "  Exemplo: +add google.com\n\n"
-            "• www.site.com\n"
-            "  Abre um site já cadastrado.\n"
+            "• +addpagina site/pagina\n"
+            "  Exemplo: +addpagina google.com/imagens\n\n"
+            "• www.site.com ou www.site.com/pagina\n"
             "━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         )
 
-    # Comando para adicionar URLs
+    # Adicionar site
     if url.startswith("+add "):
-        nova_url = url[5:].strip()
+        dominio = url[5:].strip()
+        if not dominio.startswith("www."):
+            dominio = "www." + dominio
 
-        if not nova_url.startswith("www."):
-            nova_url = "www." + nova_url
+        if dominio in estrutura.listar_sites():
+            return f"Site '{dominio}' já existe."
 
-        sites = carregar_sites()
+        estrutura.adicionar_site(dominio)
+        return f"Site '{dominio}' adicionado com sucesso."
 
-        if nova_url in sites:
-            return f"Site '{nova_url}' já existe."
+    # Adicionar página
+    if url.startswith("+addpagina "):
+        caminho = url[11:].strip()
 
-        with open(SITES_FILE, 'a', encoding='utf-8') as f:
-            f.write(f"\n{nova_url}")
-            return f"Site '{nova_url}' adicionado com sucesso."
+        if "/" not in caminho:
+            return "Formato inválido. Use: +addpagina site/pagina"
 
-    sites = carregar_sites()
-    if url in sites:
-        return f"Site aberto: {url}\n"
+        dominio, pagina = caminho.split("/", 1)
+
+        if not dominio.startswith("www."):
+            dominio = "www." + dominio
+
+        estrutura.adicionar_pagina(dominio, pagina)
+        return f"Página '{pagina}' adicionada ao site '{dominio}'."
+
+    # Acesso a site ou página
+    if "/" in url:
+        dominio, pagina = url.split("/", 1)
+    else:
+        dominio, pagina = url, ""
+
+    if estrutura.existe_url(dominio, pagina):
+        if pagina:
+            return f"Página aberta: {dominio}/{pagina}"
+        return f"Site aberto: {dominio}"
 
     messagebox.showerror(
         "Erro",
-        f"Site '{url}' não encontrado.\n\n"
-        f"Use '+add {url}' para adicionar à lista."
+        f"URL '{url}' não encontrada.\n\n"
+        f"Use +add ou +addpagina para cadastrar."
     )
     return ""
