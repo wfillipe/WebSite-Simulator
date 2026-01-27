@@ -17,7 +17,7 @@ class EstruturaSites:
         for site in linhas:
             site = site.strip()
             if site:
-                self.sites[site] = set([""])  # "" representa a página inicial
+                self.sites[site] = set([""])
 
     def adicionar_site(self, dominio):
         if dominio not in self.sites:
