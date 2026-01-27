@@ -4,7 +4,6 @@ from nucleo.estrutura_sites import EstruturaSites
 estrutura = EstruturaSites()
 historico = []  # Histórico centralizado aqui
 <<<<<<< HEAD
-<<<<<<< HEAD
 
 
 <<<<<<< HEAD
@@ -16,14 +15,6 @@ def pesquisa(url_digitada):
     
     # Comando de ajuda
 =======
-def pesquisa(url_digitada):
-    global historico
-    url = url_digitada.strip()
-
->>>>>>> 1c7fa3f4a4be9ded3b53405310067810fc624b43
-=======
-
-
 def pesquisa(url_digitada):
     global historico
     url = url_digitada.strip()
