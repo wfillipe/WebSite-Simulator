@@ -1,14 +1,14 @@
+from pathlib import Path
 from tkinter import messagebox
-from nucleo.estrutura_sites import EstruturaSites
 
 estrutura = EstruturaSites()
 historico = []  # Historico centralizado aqui
 
 
 def pesquisa(url_digitada):
-    global historico
     url = url_digitada.strip()
 
+    # Comando de ajuda
     if url == "#help":
         return {
             "mensagem": (
@@ -42,60 +42,27 @@ def pesquisa(url_digitada):
         }
 
     if url.startswith("+add "):
-        dominio = url[5:].strip()
-        if not dominio.startswith("www."):
-            dominio = "www." + dominio
+        nova_url = url[5:].strip()
 
-        if estrutura.existe_url(dominio):
-            return {
-                "mensagem": f"Site '{dominio}' já existe.",
-                "url": None
-            }
+        if not nova_url.startswith("www."):
+            nova_url = "www." + nova_url
 
-        estrutura.adicionar_site(dominio)
-        return {
-            "mensagem": f"Site '{dominio}' adicionado com sucesso.",
-            "url": None
-        }
+        sites = carregar_sites()
 
-    if url.startswith("+addpagina "):
-        caminho = url[11:].strip()
+        if nova_url in sites:
+            return f"Site '{nova_url}' já existe."
 
-        if "/" not in caminho:
-            return {
-                "mensagem": "Formato inválido. Use: +addpagina site/pagina",
-                "url": None
-            }
+        with open(SITES_FILE, 'a', encoding='utf-8') as f:
+            f.write(f"\n{nova_url}")
+            return f"Site '{nova_url}' adicionado com sucesso."
 
-        dominio, pagina = caminho.split("/", 1)
-        if not dominio.startswith("www."):
-            dominio = "www." + dominio
-
-        estrutura.adicionar_pagina(dominio, pagina)
-        return {
-            "mensagem": f"Página '{pagina}' adicionada ao site '{dominio}'.",
-            "url": None
-        }
-
-    if "/" in url:
-        dominio, pagina = url.split("/", 1)
-    else:
-        dominio, pagina = url, ""
-
-    if estrutura.existe_url(dominio, pagina):
-        pagina_completa = f"{dominio}/{pagina}" if pagina else dominio
-        historico.append(pagina_completa)
-        return {
-            "mensagem": f"Página aberta: {pagina_completa}",
-            "url": pagina_completa
-        }
+    sites = carregar_sites()
+    if url in sites:
+        return f"Site aberto: {url}\n"
 
     messagebox.showerror(
         "Erro",
-        f"URL '{url}' não encontrada.\n\n"
-        f"Use +add ou +addpagina para cadastrar."
+        f"Site '{url}' não encontrado.\n\n"
+        f"Use '+add {url}' para adicionar à lista."
     )
-    return {
-        "mensagem": "",
-        "url": None
-    }
+    return ""
