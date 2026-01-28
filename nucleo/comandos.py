@@ -1,8 +1,14 @@
 from pathlib import Path
 from tkinter import messagebox
 
-estrutura = EstruturaSites()
-historico = []  # Historico centralizado aqui
+BASE_DIR = Path(__file__).resolve().parent.parent
+SITES_FILE = BASE_DIR / "dados" / "sites.txt"
+
+
+def carregar_sites():
+    if not SITES_FILE.exists():
+        return []
+    return SITES_FILE.read_text(encoding="utf-8").splitlines()
 
 
 def pesquisa(url_digitada):
@@ -10,37 +16,21 @@ def pesquisa(url_digitada):
 
     # Comando de ajuda
     if url == "#help":
-        return {
-            "mensagem": (
-                "━━━━━━━━━━  AJUDA  ━━━━━━━━━━\n"
-                "Comandos disponíveis:\n\n"
-                "• #help\n"
-                "• #back: voltar para a página anterior\n\n"
-                "• +add site\n"
-                "  Exemplo: +add google.com\n\n"
-                "• +addpagina site/pagina\n"
-                "  Exemplo: +addpagina google.com/imagens\n\n"
-                "• www.site.com ou www.site.com/pagina\n"
-                "• #sair: para encerrar o programa\n"
-                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            ),
-            "url": None
-        }
+        return (
+            "━━━━━━━━━━  AJUDA  ━━━━━━━━━━\n"
+            "Comandos disponíveis:\n\n"
+            "• #help\n"
+            "• #back: retornar à página anterior\n"
+            "  Mostra esta tela de ajuda.\n\n"
+            "• +add site\n"
+            "  Adiciona um site à lista.\n"
+            "  Exemplo: +add google.com\n\n"
+            "• www.site.com\n"
+            "  Abre um site já cadastrado.\n"
+            "━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        )
 
-    if url == "#back":
-        if len(historico) <= 1:
-            return {
-                "mensagem": "Nenhuma página anterior no histórico.",
-                "url": None
-            }
-
-        historico.pop()  # remove a atual
-        pagina_anterior = historico[-1]
-        return {
-            "mensagem": f"Voltando para: {pagina_anterior}",
-            "url": pagina_anterior
-        }
-
+    # Comando para adicionar URLs
     if url.startswith("+add "):
         nova_url = url[5:].strip()
 

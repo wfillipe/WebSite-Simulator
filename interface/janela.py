@@ -38,8 +38,6 @@ def iniciar_janela(funcao_pesquisa): #Maior parte da formatação da janela do t
 
    
     def ao_clicar():
-        
-
         url = entrada.get().strip()
         
         if url == "#sair":
@@ -50,13 +48,10 @@ def iniciar_janela(funcao_pesquisa): #Maior parte da formatação da janela do t
         texto = funcao_pesquisa(url)
         resultado.config(text=texto)
 
-        if url == "#sair":
-            navegador1.quit()
-            navegador1.destroy()
-            return
+        if texto.startswith("Site aberto:"):  #Se o site for válido, adiciona ao histórico
+            historico.append(url)
+            historico_box.insert(END, url)
         
-        if resposta["url"]:
-            historico_box.insert(END, resposta["url"])
 
         
     botao = Button(navegador1, text='Buscar', command=ao_clicar)
