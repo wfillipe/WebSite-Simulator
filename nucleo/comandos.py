@@ -2,7 +2,7 @@ from tkinter import messagebox
 from nucleo.estrutura_sites import EstruturaSites
 
 estrutura = EstruturaSites()
-historico = []  # Histórico centralizado aqui
+historico = []  # Historico centralizado aqui
 
 
 def pesquisa(url_digitada):
@@ -21,6 +21,7 @@ def pesquisa(url_digitada):
                 "• +addpagina site/pagina\n"
                 "  Exemplo: +addpagina google.com/imagens\n\n"
                 "• www.site.com ou www.site.com/pagina\n"
+                "• #sair: para encerrar o programa\n"
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
             ),
             "url": None

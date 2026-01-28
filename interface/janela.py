@@ -26,10 +26,17 @@ def iniciar_janela(funcao_pesquisa):
     resultado.grid(column=0, row=5)
 
     def ao_clicar():
+        
+
         url = entrada.get().strip()
         resposta = funcao_pesquisa(url)
         resultado.config(text=resposta["mensagem"])
 
+        if url == "#sair":
+            navegador1.quit()
+            navegador1.destroy()
+            return
+        
         if resposta["url"]:
             historico_box.insert(END, resposta["url"])
 
